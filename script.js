@@ -27,6 +27,8 @@ Crea una funzione getPost(id) che recupera l'intero post.
 Concatena una seconda chiamata che aggiunge una proprietà user che contiene i dati dell'autore, recuperati dalla chiamata https://dummyjson.com/users/{post.userId}.
 */
 
+//funzione per recuperare l'intero post
+
 const getAllPost = id => {
     return new Promise ((resolve, reject) => {
         setTimeout(() => {
@@ -40,6 +42,35 @@ const getAllPost = id => {
 
 
 
-getAllPost(1)
+getAllPost(3)
 .then(obj => console.log(obj))
+.catch(error => console.error(error))
+
+
+
+
+////funzione per recuperare l'intero post ed aggiungere l'autore
+
+const getPostandAuthor = id => {
+  return new Promise ((resolve, reject) => {
+      setTimeout(() => {
+        fetch(`https://dummyjson.com/posts/${id}`) 
+        .then(response => response.json())
+        .then(objPost => {
+          fetch(`https://dummyjson.com/users/${objPost.userId}`)
+          .then(response => response.json()) 
+          .then(objUser => {
+            const risultato = {...objPost, autore: objUser}
+            resolve(risultato)
+          })
+
+        })
+        .catch(reject)
+      }, 2000)
+  })
+}
+
+
+getPostandAuthor(1)
+.then(risultato => console.log(risultato))
 .catch(error => console.error(error))
